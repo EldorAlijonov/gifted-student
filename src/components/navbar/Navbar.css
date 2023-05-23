@@ -1,0 +1,15 @@
+.navbar-select {
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+.navbar-select-div {
+    
+    transition: .6s all;
+    position: relative;
+}
+
+.navbar-select-div:hover {
+    background-color: #f4f5f7;
+}

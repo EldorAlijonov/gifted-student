@@ -1,5 +1,5 @@
 import React from 'react';
-
+import "./Navbar.css"
 function Navbar() {
     return (
         <div className="position-relative fixed-top">
@@ -24,13 +24,18 @@ function Navbar() {
                                 <a className="nav-link disabled">Disabled</a>
                             </li>
                         </ul>
-                        <div className="ms-auto d-flex">
+                        <div className="ms-auto d-flex align-items-center">
                             <a href="#" className="btn btn-primary me-4 px-4">Kirish</a>
-                           <select>
-                            <option value="1"></option>
-                           </select>
+                            <div className="d-flaex navbar-select-div py-1 px-2 rounded text-secondary">
+                                <i class="bi bi-globe"></i>
+                                <select className="px-2 navbar-select text-secondary" >
+                                    <option value="1">Uz</option>
+                                    <option value="1">Ru</option>
+                                    <option value="1">En</option>
+                                </select>
+                            </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </nav>
