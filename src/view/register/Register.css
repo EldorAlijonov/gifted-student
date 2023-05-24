@@ -1,0 +1,32 @@
+.section-vh {
+    min-height: 88vh;
+}
+
+.form-input-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 53px;
+    position: relative;
+    background-color: #f5f7f9;
+    border-radius: 8px;
+    border: 1px solid transparent;
+}
+
+.form-input-div:hover {
+    border: 1px solid #3f8cff;
+}
+
+.form-control-style {
+    border: none;
+    outline: none;
+    padding: 0 8px;
+    background-color: transparent;
+}
+
+.bi-envelope,
+.bi-file-earmark-person,
+.bi-lock {
+    padding: 3px;
+    font-size: 20px;
+}
