@@ -18,7 +18,6 @@ function Register() {
         setPost({ ...post, [e.target.name]: e.target.value })
     }
 
-    console.log(post);
     const inputs = [
         {
             id: 1,

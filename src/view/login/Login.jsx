@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUserStart } from '../../slice/auth';
 import { Input, Button, GoogleButton } from '../../ui';
 import "./Login.css";
 function Login() {
@@ -9,8 +11,21 @@ function Login() {
         password: "",
     })
 
+
+    const dispatch = useDispatch();
+
+    const { isLoading } = useSelector((state) => state.auth);
+
+
     const onChange = (e) => {
         setPost({ ...post, [e.target.name]: e.target.value })
+    }
+
+
+
+    const loginHandler = (e) => {
+        e.preventDefault();
+        dispatch(loginUserStart());
     }
 
     const inputs = [
@@ -41,7 +56,13 @@ function Login() {
                                 <Input key={input.id} {...input} value={post[input.name]} onChange={onChange} />
                             ))}
                             <div className="d-flex justify-content-center">
-                                <Button buttonStyle={"btn-primary w-75"} buttonName={"Kirish"} buttonType={"submit"} />
+                                <Button
+                                    buttonStyle={"btn-primary w-75"}
+                                    buttonName={isLoading?"Loading..":"Kirish"}
+                                    buttonType={"submit"}
+                                    onClick={loginHandler}
+                                    disabled={isLoading}
+                                />
                             </div>
                             <div className="d-flex justify-content-center ">
                                 <GoogleButton />
