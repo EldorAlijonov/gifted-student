@@ -1,4 +1,6 @@
 import { React, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUserStart } from '../../slice/auth';
 import { Input, Button, GoogleButton } from '../../ui';
 
 import "./Register.css";
@@ -12,6 +14,15 @@ function Register() {
         password: "",
         password2: ""
     });
+
+    const dispatch = useDispatch();
+
+    const { isLoading } = useSelector((state) => state.auth);
+
+    const loginHandler = (e) => {
+        e.preventDefault();
+        dispatch(registerUserStart());
+    }
 
 
     const onChange = (e) => {
@@ -69,7 +80,13 @@ function Register() {
                                 <Input key={input.id} {...input} value={post[input.name]} onChange={onChange} />
                             ))}
                             <div className="d-flex justify-content-center">
-                                <Button buttonStyle={"btn-primary w-75"} buttonName={"Jo'natish"} buttonType={"submit"} />
+                                <Button
+                                    buttonStyle={"btn-primary w-75"}
+                                    buttonName={isLoading ? "Loading..." : "Jo'natish"}
+                                    buttonType={"submit"}
+                                    onClick={loginHandler}
+                                    disabled={isLoading}
+                                />
                             </div>
                             <div className="d-flex justify-content-center ">
                                 <GoogleButton />

@@ -58,7 +58,7 @@ function Login() {
                             <div className="d-flex justify-content-center">
                                 <Button
                                     buttonStyle={"btn-primary w-75"}
-                                    buttonName={isLoading?"Loading..":"Kirish"}
+                                    buttonName={isLoading?"Loading...":"Kirish"}
                                     buttonType={"submit"}
                                     onClick={loginHandler}
                                     disabled={isLoading}
