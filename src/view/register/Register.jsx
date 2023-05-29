@@ -19,7 +19,7 @@ function Register() {
 
     const { isLoading } = useSelector((state) => state.auth);
 
-    const loginHandler = (e) => {
+    const registerHandler = (e) => {
         e.preventDefault();
         dispatch(registerUserStart());
     }
@@ -80,13 +80,14 @@ function Register() {
                                 <Input key={input.id} {...input} value={post[input.name]} onChange={onChange} />
                             ))}
                             <div className="d-flex justify-content-center">
-                                <Button
-                                    buttonStyle={"btn-primary w-75"}
-                                    buttonName={isLoading ? "Loading..." : "Jo'natish"}
-                                    buttonType={"submit"}
-                                    onClick={loginHandler}
+                                <button
+                                    type={"submit"}
+                                    onClick={registerHandler}
                                     disabled={isLoading}
-                                />
+                                    className={`btn btn-primary w-75`}
+                                >
+                                    {isLoading ? "Loading..." : "Jo'natish"}
+                                </button>
                             </div>
                             <div className="d-flex justify-content-center ">
                                 <GoogleButton />

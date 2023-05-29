@@ -56,13 +56,14 @@ function Login() {
                                 <Input key={input.id} {...input} value={post[input.name]} onChange={onChange} />
                             ))}
                             <div className="d-flex justify-content-center">
-                                <Button
-                                    buttonStyle={"btn-primary w-75"}
-                                    buttonName={isLoading?"Loading...":"Kirish"}
-                                    buttonType={"submit"}
+                                <button
+                                    type={"submit"}
                                     onClick={loginHandler}
                                     disabled={isLoading}
-                                />
+                                    className={`btn btn-primary w-75`}
+                                >
+                                    {isLoading ? "Loading..." : "Kirish"}
+                                </button>
                             </div>
                             <div className="d-flex justify-content-center ">
                                 <GoogleButton />
