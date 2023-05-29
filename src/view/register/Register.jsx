@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUserStart } from '../../slice/auth';
+import AuthService from '../../services/auth';
+import { registerUserFailure, registerUserStart, registerUserSuccess } from '../../slice/auth';
 import { Input, Button, GoogleButton } from '../../ui';
 
 import "./Register.css";
@@ -19,9 +20,20 @@ function Register() {
 
     const { isLoading } = useSelector((state) => state.auth);
 
-    const registerHandler = (e) => {
+     const registerHandler = async (e) => {
         e.preventDefault();
         dispatch(registerUserStart());
+        try {
+            const response = await AuthService.userRegister();
+            console.log(response)
+
+
+            dispatch(registerUserSuccess());
+        } catch (error) {
+            dispatch(registerUserFailure());
+
+        }
+
     }
 
 
