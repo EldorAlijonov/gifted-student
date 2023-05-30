@@ -15,8 +15,14 @@ export const authSlise = createSlice({
         loginUserStart: state => {
             state.isLoading = true
         },
-        loginUserSuccess: state => { },
-        loginUserFailure: state => { },
+        loginUserSuccess: state => {
+            state.loggedIn = true
+            state.isLoading = false
+        },
+        loginUserFailure: state => {
+            state.isLoading = false
+            state.error = "error"
+        },
 
         // register
         registerUserStart: state => {
@@ -34,8 +40,9 @@ export const authSlise = createSlice({
         },
     }
 });
-export const { loginUserStart,
+export const { loginUserStart, loginUserFailure,
+    loginUserSuccess,
     registerUserStart, registerUserSuccess,
     registerUserFailure } = authSlise.actions
-    
+
 export default authSlise.reducer;

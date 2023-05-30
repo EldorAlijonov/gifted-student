@@ -20,14 +20,21 @@ function Register() {
 
     const { isLoading } = useSelector((state) => state.auth);
 
-     const registerHandler = async (e) => {
+    const user = {
+        first_name: post.first_name,
+        last_name: post.last_name,
+        email: post.email,
+        password: post.password,
+        password2: post.password2
+    }
+
+
+    const registerHandler = async (e) => {
         e.preventDefault();
         dispatch(registerUserStart());
         try {
-            const response = await AuthService.userRegister();
-            console.log(response)
-
-
+            const response = await AuthService.userRegister(user);
+            console.log(response);
             dispatch(registerUserSuccess());
         } catch (error) {
             dispatch(registerUserFailure());

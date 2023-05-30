@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUserStart } from '../../slice/auth';
+import AuthService from '../../services/auth';
+import { loginUserFailure, loginUserStart, loginUserSuccess } from '../../slice/auth';
 import { Input, Button, GoogleButton } from '../../ui';
 import "./Login.css";
 function Login() {
@@ -21,11 +22,23 @@ function Login() {
         setPost({ ...post, [e.target.name]: e.target.value })
     }
 
+    const user = {
+        email: post.email,
+        password: post.password
+    }
 
-
-    const loginHandler = (e) => {
+    const loginHandler = async (e) => {
         e.preventDefault();
         dispatch(loginUserStart());
+        try {
+            const response = await AuthService.userLogin(user);
+            console.log(response);
+            dispatch(loginUserSuccess());
+
+        } catch (error) {
+            dispatch(loginUserFailure());
+
+        }
     }
 
     const inputs = [
