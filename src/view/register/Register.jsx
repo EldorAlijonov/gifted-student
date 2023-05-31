@@ -37,6 +37,7 @@ function Register() {
             console.log(response);
             dispatch(registerUserSuccess());
         } catch (error) {
+            console.log(error);
             dispatch(registerUserFailure());
 
         }
