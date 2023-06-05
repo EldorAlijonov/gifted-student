@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ValidationError } from '../../components';
 import AuthService from '../../services/auth';
 import { loginUserFailure, loginUserStart, loginUserSuccess } from '../../slice/auth';
 import { Input, GoogleButton } from '../../ui';
@@ -10,17 +11,15 @@ function Login() {
     const [post, setPost] = useState({
         email: "",
         password: "",
-    })
+    });
 
+    const onChange = (e) => {
+        setPost({ ...post, [e.target.name]: e.target.value });
+    }
 
     const dispatch = useDispatch();
 
     const { isLoading } = useSelector((state) => state.auth);
-
-
-    const onChange = (e) => {
-        setPost({ ...post, [e.target.name]: e.target.value })
-    }
 
 
     const loginHandler = async (e) => {
@@ -28,10 +27,10 @@ function Login() {
         dispatch(loginUserStart());
         try {
             const response = await AuthService.userLogin(post);
-            dispatch(loginUserSuccess());
+            dispatch(loginUserSuccess(response.post));
 
         } catch (error) {
-            dispatch(loginUserFailure());
+            dispatch(loginUserFailure(error.response));
 
         }
     }
@@ -60,6 +59,7 @@ function Login() {
                     <div className="col-md-5 position-relative bg-white rounded p-4 shadow py-5">
                         <form>
                             <h5 className="title text-center">Tizimga kirish</h5>
+                            {/* <ValidationError /> */}
                             {inputs.map((input) => (
                                 <Input key={input.id} {...input} value={post[input.name]} onChange={onChange} />
                             ))}

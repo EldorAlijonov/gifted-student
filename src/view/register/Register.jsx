@@ -1,5 +1,6 @@
 import { React, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ValidationError } from '../../components';
 import AuthService from '../../services/auth';
 import { registerUserFailure, registerUserStart, registerUserSuccess } from '../../slice/auth';
 import { Input, Button, GoogleButton } from '../../ui';
@@ -16,6 +17,11 @@ function Register() {
         password2: ""
     });
 
+
+    const onChange = (e) => {
+        setPost({ ...post, [e.target.name]: e.target.value })
+    }
+
     const dispatch = useDispatch();
 
     const { isLoading } = useSelector((state) => state.auth);
@@ -26,18 +32,12 @@ function Register() {
         dispatch(registerUserStart());
         try {
             const response = await AuthService.userRegister(post);
-            dispatch(registerUserSuccess());
+            dispatch(registerUserSuccess(response.post));
         } catch (error) {
-            console.log(error);
-            dispatch(registerUserFailure());
+            dispatch(registerUserFailure(error.response));
 
         }
 
-    }
-
-
-    const onChange = (e) => {
-        setPost({ ...post, [e.target.name]: e.target.value })
     }
 
     const inputs = [
@@ -87,6 +87,7 @@ function Register() {
                     <div className="col-md-5 position-relative bg-white rounded p-4 shadow py-5">
                         <form>
                             <h5 className="title text-center">Ro'yxatdan o'tish</h5>
+                            {/* <ValidationError /> */}
                             {inputs.map((input) => (
                                 <Input key={input.id} {...input} value={post[input.name]} onChange={onChange} />
                             ))}

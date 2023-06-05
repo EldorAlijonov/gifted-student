@@ -15,27 +15,31 @@ export const authSlise = createSlice({
         loginUserStart: state => {
             state.isLoading = true
         },
-        loginUserSuccess: state => {
+        loginUserSuccess: (state, action) => {
             state.loggedIn = true
             state.isLoading = false
+            state.user = action.payload
+            localStorage.setItem("token", action.payload.token)
         },
-        loginUserFailure: state => {
+        loginUserFailure: (state, action) => {
             state.isLoading = false
-            state.error = "error"
+            state.error = action.payload
         },
 
         // register
         registerUserStart: state => {
             state.isLoading = true
         },
-        registerUserSuccess: state => {
+        registerUserSuccess: (state, action) => {
             state.loggedIn = true
             state.isLoading = false
+            state.user = action.payload
+
 
         },
-        registerUserFailure: state => {
+        registerUserFailure: (state, action) => {
             state.isLoading = false
-            state.error = "error"
+            state.error = action.payload
 
         },
     }
