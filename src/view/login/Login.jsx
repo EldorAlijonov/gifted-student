@@ -25,9 +25,10 @@ function Login() {
     const loginHandler = async (e) => {
         e.preventDefault();
         dispatch(loginUserStart());
+
         try {
             const response = await AuthService.userLogin(post);
-            dispatch(loginUserSuccess(response.post));
+            dispatch(loginUserSuccess(response));
 
         } catch (error) {
             dispatch(loginUserFailure(error.response));
