@@ -46,9 +46,13 @@ export const authSlise = createSlice({
         },
     }
 });
-export const { loginUserStart, loginUserFailure,
+export const {
+    loginUserStart,
+    loginUserFailure,
     loginUserSuccess,
-    registerUserStart, registerUserSuccess,
-    registerUserFailure } = authSlise.actions
+    registerUserStart,
+    registerUserSuccess,
+    registerUserFailure
+} = authSlise.actions
 
 export default authSlise.reducer;
