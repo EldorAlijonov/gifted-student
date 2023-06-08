@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { setItem } from "../helpers/persistance-storage";
+import { setItem } from "../helpers/storage";
 
 const initialState = {
     isLoading: false,
@@ -20,8 +20,8 @@ export const authSlise = createSlice({
             state.loggedIn = true
             state.isLoading = false
             state.user = action.payload
-            setItem('token', JSON.stringify(state.user))
-
+            setItem("token", action.payload.access)
+            // setItem('token', JSON.stringify(state.user.access))
         },
         loginUserFailure: (state, action) => {
             state.isLoading = false
@@ -36,7 +36,7 @@ export const authSlise = createSlice({
             state.loggedIn = true
             state.isLoading = false
             state.user = action.payload
-            setItem('token', JSON.stringify(state.user))
+
 
         },
         registerUserFailure: (state, action) => {
@@ -46,13 +46,9 @@ export const authSlise = createSlice({
         },
     }
 });
-export const {
-    loginUserStart,
-    loginUserFailure,
+export const { loginUserStart, loginUserFailure,
     loginUserSuccess,
-    registerUserStart,
-    registerUserSuccess,
-    registerUserFailure
-} = authSlise.actions
+    registerUserStart, registerUserSuccess,
+    registerUserFailure } = authSlise.actions
 
 export default authSlise.reducer;

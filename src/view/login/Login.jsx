@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { ValidationError } from '../../components';
 import AuthService from '../../services/auth';
 import { loginUserFailure, loginUserStart, loginUserSuccess } from '../../slice/auth';
@@ -8,7 +7,7 @@ import { Input, GoogleButton } from '../../ui';
 import "./Login.css";
 function Login() {
 
-    const navigate = useNavigate();
+
     const [post, setPost] = useState({
         email: "",
         password: "",
@@ -20,30 +19,21 @@ function Login() {
 
     const dispatch = useDispatch();
 
-    const { isLoading, loggedIn } = useSelector((state) => state.auth);
+    const { isLoading } = useSelector((state) => state.auth);
 
 
     const loginHandler = async (e) => {
         e.preventDefault();
         dispatch(loginUserStart());
-
         try {
             const response = await AuthService.userLogin(post);
             dispatch(loginUserSuccess(response));
-            navigate("/profil")
 
         } catch (error) {
             dispatch(loginUserFailure(error.response));
 
         }
     }
-
-
-    useEffect(() => {
-        if (loggedIn) {
-            navigate("/profil")
-        }
-    }, [loggedIn])
 
     const inputs = [
         {
