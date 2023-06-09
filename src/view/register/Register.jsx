@@ -1,5 +1,6 @@
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { ValidationError } from '../../components';
 import AuthService from '../../services/auth';
 import { registerUserFailure, registerUserStart, registerUserSuccess } from '../../slice/auth';
@@ -8,6 +9,7 @@ import { Input, Button, GoogleButton } from '../../ui';
 import "./Register.css";
 function Register() {
 
+    const navigate = useNavigate();
 
     const [post, setPost] = useState({
         first_name: "",
@@ -24,7 +26,7 @@ function Register() {
 
     const dispatch = useDispatch();
 
-    const { isLoading } = useSelector((state) => state.auth);
+    const { isLoading ,loggedIn} = useSelector((state) => state.auth);
 
 
     const registerHandler = async (e) => {
@@ -33,6 +35,7 @@ function Register() {
         try {
             const response = await AuthService.userRegister(post);
             dispatch(registerUserSuccess(response));
+            navigate("/profil")
         } catch (error) {
             dispatch(registerUserFailure(error.response));
 
@@ -40,6 +43,12 @@ function Register() {
 
     }
 
+    useEffect(() => {
+        if (loggedIn) {
+            navigate("/profil")
+
+        }
+    }, [])
     const inputs = [
         {
             id: 1,

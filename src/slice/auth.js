@@ -20,7 +20,6 @@ export const authSlise = createSlice({
             state.loggedIn = true
             state.isLoading = false
             state.user = action.payload
-            setItem("token", action.payload.access)
             // setItem('token', JSON.stringify(state.user.access))
         },
         loginUserFailure: (state, action) => {
@@ -36,6 +35,9 @@ export const authSlise = createSlice({
             state.loggedIn = true
             state.isLoading = false
             state.user = action.payload
+            setItem("token", action.payload.access)
+            // setItem('token', JSON.stringify(state.user.access))
+
 
 
         },
