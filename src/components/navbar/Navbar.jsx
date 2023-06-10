@@ -6,7 +6,6 @@ function Navbar() {
 
     const { loggedIn, user } = useSelector(state => state.auth);
 
-
     return (
         <nav className="navbar navbar-expand-lg bg-white border-bottom py-3 sticky-top">
             <div className="container">
@@ -16,10 +15,10 @@ function Navbar() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     {loggedIn ? (
-                        <div className="mx-auto d-flex align-items-center">
-                            <p className="text-dark">{user.email}</p>
-                            <button className="btn btn-outline-danger">Logout</button>
-                        </div>
+                        <ul className="ms-auto navbar-nav">
+                            <p className="text-dark">{}</p>
+                            <button className="btn btn-outline-danger px-4 fw-bold">Logout</button>
+                        </ul>
                     ) : (
                         <>
                             <ul className="navbar-nav">
@@ -49,8 +48,6 @@ function Navbar() {
                             </div>
                         </>
                     )}
-
-
 
                 </div>
             </div>

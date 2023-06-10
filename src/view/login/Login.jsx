@@ -40,7 +40,6 @@ function Login() {
     useEffect(() => {
         if (loggedIn) {
             navigate("/profil")
-
         }
     },[])
     const inputs = [
