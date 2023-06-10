@@ -1,10 +1,23 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { removeItem } from '../../helpers/storage';
+import { logoutUser } from '../../slice/auth';
 import "./Navbar.css"
 function Navbar() {
 
+    const dispatch = useDispatch();
+
+    const navigate = useNavigate();
+
     const { loggedIn, user } = useSelector(state => state.auth);
+
+    const logoutHandler = () => {
+        dispatch(logoutUser());
+        removeItem("token");
+        navigate("/login");
+    }
+
 
     return (
         <nav className="navbar navbar-expand-lg bg-white border-bottom py-3 sticky-top">
@@ -16,8 +29,8 @@ function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     {loggedIn ? (
                         <ul className="ms-auto navbar-nav">
-                            <p className="text-dark">{}</p>
-                            <button className="btn btn-outline-danger px-4 fw-bold">Logout</button>
+                            <p className="text-dark">{ }</p>
+                            <button className="btn btn-outline-danger px-4 fw-bold" onClick={logoutHandler}>Logout</button>
                         </ul>
                     ) : (
                         <>

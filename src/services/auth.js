@@ -12,7 +12,7 @@ const AuthService = {
 
 
     async getUser() {
-        const { data } = await axios.get("user")
+        const { data } = await axios.get("students/")
         return data
     }
 }
