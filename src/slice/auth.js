@@ -6,6 +6,7 @@ const initialState = {
     loggedIn: false,
     error: null,
     user: null,
+    token: localStorage?.getItem("token")
 }
 
 export const authSlise = createSlice({
@@ -20,8 +21,8 @@ export const authSlise = createSlice({
             state.loggedIn = true
             state.isLoading = false
             state.user = action.payload
-            // setItem("token", action.payload.token)
-            setItem('token', JSON.stringify(state.user))
+            state.token = action.payload
+            setItem('token', action.payload.access)
         },
         loginUserFailure: (state, action) => {
             state.isLoading = false
@@ -31,6 +32,10 @@ export const authSlise = createSlice({
         // logout user
 
         logoutUser: (state) => {
+            state.isLoading = true
+        },
+        logoutUserSuccess: (state) => {
+            state.isLoading = false
             state.user = null
             state.loggedIn = false
         },
@@ -43,10 +48,8 @@ export const authSlise = createSlice({
             state.loggedIn = true
             state.isLoading = false
             state.user = action.payload
-            // setItem("token", action.payload.token)
-            setItem('token', JSON.stringify(state.user))
-
-
+            state.token = action.payload
+            setItem('token', action.payload.access)
 
         },
         registerUserFailure: (state, action) => {
@@ -56,9 +59,13 @@ export const authSlise = createSlice({
         },
     }
 });
+
+
+
 export const { loginUserStart, loginUserFailure,
     loginUserSuccess,
     registerUserStart, registerUserSuccess,
-    registerUserFailure, logoutUser } = authSlise.actions
+    registerUserFailure, logoutUser, logoutUserSuccess } = authSlise.actions
+
 
 export default authSlise.reducer;

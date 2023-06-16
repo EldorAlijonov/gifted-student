@@ -11,8 +11,8 @@ const AuthService = {
     },
 
 
-    async getUser() {
-        const { data } = await axios.get("students/")
+    async getUser(user) {
+        const { data } = await axios.get(`auth/user/`)
         return data
     }
 }

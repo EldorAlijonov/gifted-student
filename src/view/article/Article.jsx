@@ -1,33 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import jwt_decode from "jwt-decode";
-import "./Profil.css";
-import axios from '../../services/api';
 
-function Profil() {
-
-    const [post, setPost] = useState([]);
-
-    // const { token } = useSelector(state => state.auth);
-
-    const token = localStorage.getItem("token")
-    const decoded = jwt_decode(token);
-
-    console.log(decoded, "decode token");
-
-    useEffect(() => {
-        axios.get(`auth/user/${decoded.user_id}`, post)
-            .then((res) => {
-                setPost(res.data)
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    }, []);
-
-
-
+function Article() {
     return (
         <div className="container profil-div">
             <div className="main-body">
@@ -39,7 +13,7 @@ function Profil() {
                                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
                                         className="rounded-circle border" width="150" />
                                     <div className="mt-3">
-                                        <h4>{post.first_name} {post.last_name}</h4>
+                                        <h4>Eldor Alijonov</h4>
                                         <marquee width="200" direction="left" scrollamount="1"
                                             className="text-secondary mb-1">
                                             Amaliy Matematika 3-kurs 20.08 guruh talabasi
@@ -63,8 +37,8 @@ function Profil() {
                                     </Link>
                                 </li>
                                 <li className="list-group-item d-flex align-items-center flex-wrap">
-                                    <Link className="btn fs-5 profil-button" to={"/article_add"}>
-                                        <i className="bi bi-file-earmark-minus fs-3 me-3" ></i>
+                                    <Link className="btn fs-5 profil-button" to={"/article_add"} >
+                                        <i className="bi bi-file-earmark-minus fs-3 me-3"></i>
                                         Maqolalar
                                     </Link>
                                 </li>
@@ -86,57 +60,27 @@ function Profil() {
                     <div className="col-md-8">
                         <div className="mb-3 card bg-white">
                             <div className="card-body">
-                                <div className="row">
+                                <h4 className="title text-center py-2">Maqolalar</h4>
+                                <div className="row mb-3">
                                     <div className="col-sm-3">
-                                        <h6 className="mb-0">Ism Familya</h6>
+                                        <h6 className="mb-0">Maqola manzili</h6>
                                     </div>
                                     <div className="col-sm-9 text-secondary">
-                                        {post.first_name} {post.last_name}
+                                        <input type="text" className="form-control" value="" />
                                     </div>
                                 </div>
-                                <hr />
-                                <div className="row">
+                                <div className="row mb-3">
                                     <div className="col-sm-3">
-                                        <h6 className="mb-0">Email</h6>
+                                        <h6 className="mb-0">Maqolaning pdf yoki wort Varianti</h6>
                                     </div>
                                     <div className="col-sm-9 text-secondary">
-                                        {post.email}
+                                        <input type="file" className="form-control" value="" />
                                     </div>
                                 </div>
-                                <hr />
                                 <div className="row">
-                                    <div className="col-sm-3">
-                                        <h6 className="mb-0">Fakultet</h6>
-                                    </div>
-                                    <div className="col-sm-9 text-secondary">
-                                        Matematika Informatika
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="row">
-                                    <div className="col-sm-3">
-                                        <h6 className="mb-0">Yo'nalish</h6>
-                                    </div>
-                                    <div className="col-sm-9 text-secondary">
-                                        Amaliy Matematika
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="row">
-                                    <div className="col-sm-3">
-                                        <h6 className="mb-0">Kurs va yo'nalish</h6>
-                                    </div>
-                                    <div className="col-sm-9 text-secondary">
-                                        3-kurs 20.08 guruh
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="row">
-                                    <div className="col-sm-12 d-flex justify-content-end">
-                                        <button className="btn btn-info fw-semibold "
-                                        >
-                                            <i className="bi bi-pencil-square fs-6 me-3"></i>
-                                            O'zgartirish
+                                    <div className="col-sm-12 text-end">
+                                        <button className="btn btn-primary px-5">
+                                            Saqlash
                                         </button>
                                     </div>
                                 </div>
@@ -150,4 +94,4 @@ function Profil() {
     )
 }
 
-export default Profil;
+export default Article;
