@@ -1,10 +1,14 @@
-import React from 'react';
+import axios from '../../services/api';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import jwt_decode from "jwt-decode";
 
 const ProfilInfoAdd = () => {
 
+    const token = localStorage.getItem('token');
+    const decoded = jwt_decode(token);
+
     const [post, setPost] = useState({
-        id: '',
         faculty: '',
         image: '',
         group: '',
@@ -12,7 +16,7 @@ const ProfilInfoAdd = () => {
         passport_number: "",
         idcart_number: "",
         passport_or_idcart_file: '',
-        status: '',
+        status: false,
         region: '',
         district: "",
         street: "",
@@ -30,6 +34,16 @@ const ProfilInfoAdd = () => {
         e.preventDefault();
 
     }
+
+    useEffect(() => {
+        axios.get(`students/${decoded.user_id}/`,)
+            .then((res) => {
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }, [])
 
 
     return (
@@ -100,6 +114,7 @@ const ProfilInfoAdd = () => {
                                             name='passport_number'
                                             value={post.passport_number}
                                             placeholder="AA 1111111"
+                                            onChange={onChange}
                                         />
                                     </div>
                                 </div>
@@ -109,6 +124,7 @@ const ProfilInfoAdd = () => {
                                     </div>
                                     <div className="col-sm-9 text-secondary">
                                         <input type="text" className="form-control"
+                                            onChange={onChange}
                                             name="region"
                                             value={post.region}
                                         />
@@ -120,6 +136,7 @@ const ProfilInfoAdd = () => {
                                     </div>
                                     <div className="col-sm-9 text-secondary">
                                         <input type="text"
+                                            onChange={onChange}
                                             name="district"
                                             className="form-control" value={post.district} />
                                     </div>
@@ -130,6 +147,7 @@ const ProfilInfoAdd = () => {
                                     </div>
                                     <div className="col-sm-9 text-secondary">
                                         <input type="text" className="form-control" value={post.street}
+                                            onChange={onChange}
                                             name="street"
                                         />
                                     </div>
@@ -140,10 +158,20 @@ const ProfilInfoAdd = () => {
                                         <h6 className="mb-0">Fakultet :</h6>
                                     </div>
                                     <div className="col-sm-9 text-secondary">
-                                        <select className="form-select" aria-label="Default select example">
-                                            <option selected>Fakultet</option>
-                                            <option value="1">Matematika Informatika</option>
-                                            <option value="2">Fizika texnalogiya</option>
+                                        <select className="form-select"
+                                            aria-label="Default select example"
+                                            name="faculty"
+                                            onChange={onChange}
+                                            value={post.faculty}
+                                        >
+                                            <option className="">Fakultetni tanlang</option>
+                                            {/* {
+                                                post.map((e) => (
+                                                    <option key={e.id} value={e.name}>
+                                                        {e.name}
+                                                    </option>
+                                                ))
+                                            } */}
                                         </select>
                                     </div>
                                 </div>
@@ -166,6 +194,7 @@ const ProfilInfoAdd = () => {
                                     <div className="col-sm-9 text-secondary">
                                         <input type="text" className="form-control"
                                             name="course"
+                                            onChange={onChange}
                                             value={post.course} />
                                     </div>
                                 </div>
@@ -175,6 +204,7 @@ const ProfilInfoAdd = () => {
                                     </div>
                                     <div className="col-sm-9 text-secondary">
                                         <input type="text" className="form-control"
+                                            onChange={onChange}
                                             value={post.group}
                                             name="group"
                                         />
