@@ -10,10 +10,5 @@ const AuthService = {
         return data
     },
 
-
-    async getUser(user) {
-        const { data } = await axios.get(`auth/user/`)
-        return data
-    }
 }
 export default AuthService;

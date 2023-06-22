@@ -1,10 +1,9 @@
 import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { ValidationError } from '../../components';
 import AuthService from '../../services/auth';
 import { registerUserFailure, registerUserStart, registerUserSuccess } from '../../slice/auth';
-import { Input, Button, GoogleButton } from '../../ui';
+import { Input, GoogleButton } from '../../ui';
 
 import "./Register.css";
 function Register() {
@@ -96,7 +95,6 @@ function Register() {
                     <div className="col-md-5 position-relative bg-white rounded p-4 shadow py-5">
                         <form>
                             <h5 className="title text-center">Ro'yxatdan o'tish</h5>
-                            {/* <ValidationError /> */}
                             {inputs.map((input) => (
                                 <Input key={input.id} {...input} value={post[input.name]} onChange={onChange} />
                             ))}

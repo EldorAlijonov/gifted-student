@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { ValidationError } from '../../components';
 import AuthService from '../../services/auth';
 import { loginUserFailure, loginUserStart, loginUserSuccess } from '../../slice/auth';
 import { Input, GoogleButton } from '../../ui';
@@ -66,7 +65,6 @@ function Login() {
                     <div className="col-md-5 position-relative bg-white rounded p-4 shadow py-5">
                         <form>
                             <h5 className="title text-center">Tizimga kirish</h5>
-                            {/* <ValidationError /> */}
                             {inputs.map((input) => (
                                 <Input key={input.id} {...input} value={post[input.name]} onChange={onChange} />
                             ))}
