@@ -22,3 +22,10 @@ export const removeItem = (key) => {
         console.log("Error remove data");
     }
 }
+export const removeStudentId = (key) => {
+  try {
+    localStorage.removeItem(key);
+  } catch (error) {
+    console.log("Error remove data");
+  }
+};

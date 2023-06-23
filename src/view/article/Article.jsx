@@ -84,9 +84,6 @@ const Article = () => {
     getArticle(studentId);
   }, [post]);
 
-  const filteredArticles = article.filter(
-    (articl) => articl.student === studentId
-  );
 
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 

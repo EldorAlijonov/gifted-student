@@ -78,7 +78,7 @@ const ProfilInfoAdd = () => {
     formData.append("base_student", decodedId);
 
     if (isFormIncomplete()) {
-      setSaveMessage(<p className="text-center text-danger fw-bold">Malumotlarni to'liq kiriting</p>);
+      setSaveMessage(<p className="text-center text-danger fw-bold">Ma'lumotlarni to'liq kiriting</p>);
       return;
     }
 

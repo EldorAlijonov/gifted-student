@@ -6,12 +6,13 @@ import axios from "../../services/api";
 function Menu() {
   const [post, setPost] = useState([]);
 
+  const studentId = localStorage.getItem("studentId");
+
   const token = localStorage.getItem("token");
+
   const decoded = jwt_decode(token);
 
   useEffect(() => {
-  
-
     axios
       .get(`auth/user/${decoded.user_id}`, post)
       .then((res) => {
@@ -20,7 +21,6 @@ function Menu() {
       .catch((err) => {
         console.log(err);
       });
-
   }, []);
 
   return (
@@ -57,15 +57,37 @@ function Menu() {
             </Link>
           </li>
           <li className="list-group-item d-flex align-items-center flex-wrap">
-            <Link className="btn fs-5 profil-button" to={"/article_add"}>
+            <Link
+              className={`btn fs-5 profil-button w-100 text-start ${
+                studentId ? "" : "disabled"
+              }`}
+              to={"/article_add"}
+              disabled={!studentId}
+            >
               <i className="bi bi-file-earmark-minus fs-3 me-3"></i>
               Maqolalar
+              {studentId ? null : (
+                <p className="text-danger fs-6 ">
+                  Shaxsiy malumotlarni kiriting
+                </p>
+              )}
             </Link>
           </li>
           <li className="list-group-item d-flex align-items-center flex-wrap">
-            <Link className="btn fs-5 profil-button" to={"/student_wins"}>
+            <Link
+              className={`btn fs-5 profil-button w-100 text-start ${
+                studentId ? "" : "disabled"
+              }`}
+              disabled={!studentId}
+              to={"/student_wins"}
+            >
               <i className="bi bi-trophy fs-3 me-3"></i>
               Talaba yutuqlari
+              {studentId ? null : (
+                <p className="text-danger fs-6 ">
+                  Shaxsiy malumotlarni kiriting
+                </p>
+              )}
             </Link>
           </li>
           <li className="list-group-item">

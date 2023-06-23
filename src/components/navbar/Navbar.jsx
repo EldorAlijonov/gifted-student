@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { removeItem } from "../../helpers/storage";
+import { removeItem, removeStudentId } from "../../helpers/storage";
 import { logoutUser, logoutUserSuccess } from "../../slice/auth";
 import "./Navbar.css";
 function Navbar() {
@@ -16,6 +16,7 @@ function Navbar() {
     try {
       dispatch(logoutUserSuccess());
       removeItem("token");
+      removeStudentId("studentId");
       navigate("/login");
       window.location.reload();
     } catch (error) {

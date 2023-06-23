@@ -83,14 +83,6 @@ function Profil() {
           </div>
         </div>
         <hr />
-        {/* <div className="row">
-          <div className="col-sm-12 d-flex justify-content-end">
-            <button className="btn btn-info fw-semibold ">
-              <i className="bi bi-pencil-square fs-6 me-3"></i>
-              O'zgartirish
-            </button>
-          </div>
-        </div> */}
       </div>
     </div>
   );
