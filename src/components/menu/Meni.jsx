@@ -10,6 +10,8 @@ function Menu() {
   const decoded = jwt_decode(token);
 
   useEffect(() => {
+  
+
     axios
       .get(`auth/user/${decoded.user_id}`, post)
       .then((res) => {
@@ -18,6 +20,7 @@ function Menu() {
       .catch((err) => {
         console.log(err);
       });
+
   }, []);
 
   return (
@@ -32,15 +35,9 @@ function Menu() {
               width="150"
             />
             <div className="mt-3">
-              <h4>{post.first_name} {post.last_name}</h4>
-              <marquee
-                width="200"
-                direction="left"
-                scrollamount="1"
-                className="text-secondary mb-1"
-              >
-                Amaliy Matematika 3-kurs 20.08 guruh talabasi
-              </marquee>
+              <h4>
+                {post.first_name} {post.last_name}
+              </h4>
             </div>
           </div>
         </div>

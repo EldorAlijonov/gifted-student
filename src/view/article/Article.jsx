@@ -5,12 +5,10 @@ const initialState = {
   name: "",
   file: "",
   student: "",
-  create_at: new Date(),
 };
 
 const Article = () => {
   const studentId = localStorage.getItem("studentId");
-
   const [post, setPost] = useState(initialState);
 
   const [errors, setErrors] = useState({});
@@ -79,14 +77,17 @@ const Article = () => {
       try {
         const response = await StudentsArticle.getArticle(studentId);
         setArticle(response.results);
-        console.log(response.results);
       } catch (error) {
         console.log(error);
       }
     };
     getArticle(studentId);
   }, [post]);
-  
+
+  const filteredArticles = article.filter(
+    (articl) => articl.student === studentId
+  );
+
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
   // Yutuqni o'chirish funksiyasi
@@ -152,30 +153,33 @@ const Article = () => {
         </form>
       </div>
       <div className="w-100">
-        {article.length > 0 ? (
-          article.map((articl) => (
-            <div
-              key={articl.id}
-              className="bg-white mb-3 d-flex align-items-center justify-content-between py-2 px-3 rounded shadow-sm"
-            >
-              <h5>{articl.name}</h5>
-              <div>
-                <button className="btn btn-info me-3">Edit</button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => setConfirmDeleteId(articl.id)}
-                >
-                  Delete
-                </button>
+        {article.filter((articl) => articl.student == studentId).length > 0 ? (
+          article
+            .filter((articl) => articl.student == studentId)
+            .map((articl) => (
+              <div
+                key={articl.id}
+                className="bg-white mb-3 d-flex align-items-center justify-content-between py-2 px-3 rounded shadow-sm"
+              >
+                <h5>{articl.name}</h5>
+                <div>
+                  <button className="btn btn-info me-3">Edit</button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => setConfirmDeleteId(articl.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-            </div>
-          ))
+            ))
         ) : (
           <p className="text-center h5 text-danger mt-5">
-            No articls available
+            No articles available
           </p>
         )}
       </div>
+
       {/* Tasdiqlash oynasi start*/}
 
       {confirmDeleteId && (

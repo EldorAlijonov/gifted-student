@@ -15,7 +15,7 @@ export const StudentWinRepository = {
     const response = await axios.delete(`student-wins/${id}/delete/`);
     return response.data;
   },
-  async getWinById(id, updatedData) {
+  async editWin(id, updatedData) {
     const response = await axios.put(`student-wins/${id}/update/`, updatedData);
     return response.data;
   },

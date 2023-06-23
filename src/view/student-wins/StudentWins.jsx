@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import jwt_decode from "jwt-decode";
 import { StudentWinRepository } from "../../services/studentWin";
 import "./StudentWins.css";
 
@@ -106,34 +105,44 @@ const StudentWins = () => {
     }
   };
 
-  // const [postEdit, setPostEdit] = useState({
-  //     name: "",
-  //     file: "",
-  //     student: "10",
-  //     create_at: new Date()
-  // })
-  // const [confirmEdit, setConfirmEdit] = useState(false)
+  const [edit, setEdit] = useState({
+    name: "",
+    student: "",
+  });
 
-  // const editWin = async (id) => {
-  //     try {
-  //         // Yutuq ma'lumotlarini API dan olish
-  //         const response = await StudentWinRepository.editWin(id);
-  //         const winData = response.result;
+  const editForm = (item) => {
+    setEdit(item);
+    setConfirmEdit(true);
+  };
 
-  //         // Tahrirlash uchun yutuq ma'lumotlarini asosiy holatga o'rnating
-  //         setPostEdit({
-  //             name: winData.name,
-  //             file: "", // Fayl maydonini avtomatik to'ldirishni istamasangiz
-  //             student: winData.student,
-  //             create_at: new Date()
-  //         });
+  const [confirmEdit, setConfirmEdit] = useState(false);
+  const [confirmEditId, setConfirmEditId] = useState(null);
 
-  //         // Tahrirlash oynasini ko'rsatish
-  //         setConfirmEdit(true);
-  //     } catch (error) {
-  //         console.log(error);
-  //     }
-  // };
+  const handleEdit = async (id) => {
+    try {
+      const response = await StudentWinRepository.editWin(id, edit);
+      // Edit qilingan yutuqni yangilash
+      const updatedWins = wins.map((win) => {
+        if (win.id === id) {
+          console.log(response.results);
+        }
+        return win;
+      });
+      setWins(updatedWins);
+      setConfirmEdit(false);
+      setConfirmEditId(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const cancelEdit = () => {
+    setConfirmEdit(false);
+    setConfirmEditId(null);
+  };
+  const submit = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <>
@@ -183,34 +192,35 @@ const StudentWins = () => {
         </form>
       </div>
       <div className="w-100">
-        {wins.length > 0 ? (
-          wins.map((win) => (
-            <div
-              key={win.id}
-              className="bg-white mb-3 d-flex align-items-center justify-content-between py-2 px-3 rounded shadow-sm"
-            >
-              <h5>{win.name}</h5>
-              <div>
-                <button className="btn btn-info me-3">Edit</button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => setConfirmDeleteId(win.id)}
-                >
-                  Delete
-                </button>
+        {wins.filter((win) => win.student == studentId).length > 0 ? (
+          wins
+            .filter((win) => win.student == studentId)
+            .map((win) => (
+              <div
+                key={win.id}
+                className="bg-white mb-3 d-flex align-items-center justify-content-between py-2 px-3 rounded shadow-sm"
+              >
+                <h5>{win.name}</h5>
+                <div>
+                  <button className="btn btn-info me-3">Edit</button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => setConfirmDeleteId(win.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-            </div>
-          ))
+            ))
         ) : (
-          <p className="text-center h5 text-danger mt-5">No wins available</p>
+          <p className="text-center h5 text-danger mt-5">No winss available</p>
         )}
       </div>
       {/* Tasdiqlash oynasi start*/}
-
       {confirmDeleteId && (
         <div className="delet-modal">
           <div className="delete-confirmation-modal text-center rounded w-25">
-            <p>Yutuqni o'chirishga rozimisiz?</p>
+            <p>Yutuqni o'chirishga rozimisiza?</p>
             <div className="d-flex justify-content-between">
               <button
                 className="btn btn-primary px-4"
@@ -230,56 +240,44 @@ const StudentWins = () => {
       )}
       {/* Tasdiqlash oynasi end*/}
       {/* Edit oynasi start */}
-      {/* {confirmEdit && (
-                            <div className="delet-modal">
-                                <div className="delete-confirmation-modal text-center rounded w-50">
-                                    <p>Tahrirlash</p>
-                                    <form action="" onSubmit={handleEdit}>
-                                        <div className="row mb-3">
-                                            <div className="col-sm-3">
-                                                <h6 className="mb-0">Nomi</h6>
-                                            </div>
-                                            <div className="col-sm-9 text-secondary">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    value={postEdit.name}
-                                                    name="name"
-                                                    onChange={onChange}
-                                                />
-                                                {errors.name && <p className="error-message text-danger">{errors.name}</p>}
-                                            </div>
-                                        </div>
-                                        <div className="row mb-3">
-                                            <div className="col-sm-3">
-                                                <h6 className="mb-0">pdf yoki wort ma'lumot</h6>
-                                            </div>
-                                            <div className="col-sm-9 text-secondary">
-                                                <input
-                                                    type="file"
-                                                    className="form-control"
-                                                    name="file"
-                                                    onChange={onChangeEdit}
-                                                />
-                                                {errors.file && <p className="error-message text-danger">{errors.file}</p>}
-                                            </div>
-                                        </div>
-
-                                        <div className="d-flex justify-content-end">
-                                            <button
-                                                className="btn btn-primary px-4 me-3"
-                                            >
-                                                Tahrirlash
-                                            </button>
-                                            <button className="btn btn-secondary px-3"
-                                                onClick={() => setConfirmEdit(false)}>
-                                                Bekor qilish
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        )} */}
+      {confirmEdit && (
+        <div className="delet-modal">
+          <div className="delete-confirmation-modal text-center rounded w-50">
+            <p>Tahrirlash</p>
+            <form action="" onSubmit={submit}>
+              <div className="col-sm-3">
+                <h6 className="mb-0">Nomi</h6>
+              </div>
+              <div className="col-sm-9 text-secondary">
+                <input
+                  type="text"
+                  className="form-control"
+                  name="name"
+                  value={edit.name}
+                  onChange={(e) => setEdit({ ...edit, name: e.target.value })}
+                />
+                {errors.name && (
+                  <p className="error-message text-danger">{errors.name}</p>
+                )}
+              </div>
+              <div className="d-flex justify-content-end mt-3">
+                <button
+                  className="btn btn-primary px-4 me-3"
+                  onClick={() => handleEdit(confirmEditId)}
+                >
+                  Tahrirlash
+                </button>
+                <button
+                  className="btn btn-secondary px-3"
+                  onClick={() => cancelEdit()}
+                >
+                  Bekor qilish
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -6,6 +6,7 @@ import "./Profil.css";
 
 function Profil() {
   const [post, setPost] = useState([]);
+  const [student, setStudent] = useState([]);
 
   const token = localStorage.getItem("token");
   const decoded = jwt_decode(token);
@@ -14,7 +15,7 @@ function Profil() {
     const getStudentInfo = async (userId) => {
       try {
         const response = await StudentsRepository.getStudents(userId);
-        setPost(response.data);
+        setStudent(response.data);
         localStorage.setItem("studentId", response.data.id);
       } catch (error) {
         console.log(error);
@@ -56,31 +57,40 @@ function Profil() {
           <div className="col-sm-3">
             <h6 className="mb-0">Fakultet</h6>
           </div>
-          <div className="col-sm-9 text-secondary">Matematika Informatika</div>
+          <div className="col-sm-9 text-secondary">
+            {student.faculty ? student.faculty : "Ma'lumot kiritilmagan"}
+          </div>
         </div>
         <hr />
         <div className="row">
           <div className="col-sm-3">
             <h6 className="mb-0">Yo'nalish</h6>
           </div>
-          <div className="col-sm-9 text-secondary">Amaliy Matematika</div>
+          <div className="col-sm-9 text-secondary">
+            {student.sub_faculty
+              ? student.sub_faculty
+              : "Ma'lumot kiritilmagan"}
+          </div>
         </div>
         <hr />
         <div className="row">
           <div className="col-sm-3">
-            <h6 className="mb-0">Kurs va yo'nalish</h6>
+            <h6 className="mb-0">Kurs va Guruh</h6>
           </div>
-          <div className="col-sm-9 text-secondary">3-kurs 20.08 guruh</div>
+          <div className="col-sm-9 text-secondary">
+            {student.course ? student.course : "Ma'lumot kiritilmagan"}{" "}
+            {student.group}
+          </div>
         </div>
         <hr />
-        <div className="row">
+        {/* <div className="row">
           <div className="col-sm-12 d-flex justify-content-end">
             <button className="btn btn-info fw-semibold ">
               <i className="bi bi-pencil-square fs-6 me-3"></i>
               O'zgartirish
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
