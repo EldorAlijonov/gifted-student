@@ -4,19 +4,17 @@ import jwt_decode from "jwt-decode";
 import axios from "../../services/api";
 
 function Menu() {
-  const [post, setPost] = useState([]);
+  const [student, setStudent] = useState({});
 
   const studentId = localStorage.getItem("studentId");
-
   const token = localStorage.getItem("token");
-
   const decoded = jwt_decode(token);
 
   useEffect(() => {
     axios
-      .get(`auth/user/${decoded.user_id}`, post)
+      .get(`auth/user/${decoded.user_id}`)
       .then((res) => {
-        setPost(res.data);
+        setStudent(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -36,7 +34,7 @@ function Menu() {
             />
             <div className="mt-3">
               <h4>
-                {post.first_name} {post.last_name}
+                {student.first_name} {student.last_name}
               </h4>
             </div>
           </div>

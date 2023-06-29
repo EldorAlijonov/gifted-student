@@ -13,4 +13,8 @@ export const StudentsArticle = {
     const response = await axios.delete(`articles/${id}/delete/`);
     return response.data;
   },
+  async editArticle(id, updateData) {
+    const response = await axios.put(`articles/${id}/update/`, updateData);
+    return response.data;
+  },
 };

@@ -27,7 +27,6 @@ const ProfilInfoAdd = () => {
   const decoded = jwt_decode(token);
 
   const [post, setPost] = useState(initialState);
-  const [facultiesId, setFacultiesId] = useState("");
 
   const onChange = (e) => {
     if (e.target.name === "image") {
@@ -45,8 +44,6 @@ const ProfilInfoAdd = () => {
     } else if (e.target.name === "street") {
       setPost({ ...post, street: e.target.value });
     } else if (e.target.name === "faculty") {
-      const faculties_Id = e.target.value;
-      setFacultiesId(faculties_Id);
       setPost({ ...post, faculty: e.target.value });
     } else if (e.target.name === "sub_faculty") {
       setPost({ ...post, sub_faculty: e.target.value });
@@ -78,13 +75,19 @@ const ProfilInfoAdd = () => {
     formData.append("base_student", decodedId);
 
     if (isFormIncomplete()) {
-      setSaveMessage(<p className="text-center text-danger fw-bold">Ma'lumotlarni to'liq kiriting</p>);
+      setSaveMessage(
+        <p className="text-center text-danger fw-bold">
+          Ma'lumotlarni to'liq kiriting
+        </p>
+      );
       return;
     }
 
     try {
       const response = await StudentsRepository.addStudents(formData);
-      setSaveMessage(<p className="text-danger text-success fw-bold">Ma'lumot saqlandi</p>);
+      setSaveMessage(
+        <p className="text-center text-success fw-bold">Ma'lumot saqlandi</p>
+      );
       setPost(initialState);
       return response;
     } catch (error) {
@@ -107,7 +110,6 @@ const ProfilInfoAdd = () => {
     );
   };
   const [faculties, setFaculties] = useState([]);
-
   const [subFaculties, setSubFaculties] = useState([]);
 
   useEffect(() => {
@@ -123,14 +125,22 @@ const ProfilInfoAdd = () => {
 
     const getSubFaculties = async () => {
       try {
-        const response = await SubFaculties.getSubFaculties(facultiesId);
+        const response = await SubFaculties.getSubFaculties();
         setSubFaculties(response.results);
       } catch (error) {
         console.log(error);
       }
     };
-    getSubFaculties(faculties);
+    getSubFaculties();
   }, []);
+
+  const filteredSubFaculties = subFaculties
+    .filter((subObject) => subObject.faculty.id === post.faculty.id)
+    .map((subObject) => (
+      <option key={subObject.id} value={subObject.id}>
+        {subObject.name}
+      </option>
+    ));
 
   return (
     <>
@@ -138,7 +148,6 @@ const ProfilInfoAdd = () => {
         <div className="card-body">
           <form onSubmit={handleForm}>
             <h4 className="title text-center py-2">
-              {" "}
               Shaxsiy malumotlarni kiritish
             </h4>
             <div className="row mb-3">
@@ -252,11 +261,13 @@ const ProfilInfoAdd = () => {
                   value={post.faculty}
                 >
                   <option>Fakultetni tanlang</option>
-                  {faculties.map((facultyObject) => (
-                    <option key={facultyObject.id} value={facultyObject.id}>
-                      {facultyObject.name}
-                    </option>
-                  ))}
+                  {faculties.map((facultyObject) => {
+                    return (
+                      <option key={facultyObject.id} value={facultyObject.id}>
+                        {facultyObject.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
             </div>
@@ -272,11 +283,7 @@ const ProfilInfoAdd = () => {
                   value={post.sub_faculty}
                 >
                   <option>Yo'nalishni tanlang</option>
-                  {subFaculties.map((facultyObject) => (
-                    <option key={facultyObject.id} value={facultyObject.id}>
-                      {facultyObject.name}
-                    </option>
-                  ))}
+                  {filteredSubFaculties}
                 </select>
               </div>
             </div>
@@ -308,9 +315,7 @@ const ProfilInfoAdd = () => {
                 />
               </div>
             </div>
-            {saveMessage && (
-              <>{saveMessage}</>
-            )}
+            {saveMessage && <>{saveMessage}</>}
             <div className="row">
               <div className="col-sm-12 text-end">
                 <button className="btn btn-primary px-5" type="submit">
