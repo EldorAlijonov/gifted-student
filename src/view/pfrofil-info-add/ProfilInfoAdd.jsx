@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import { StudentsRepository } from "../../services/students";
 import { Faculties } from "../../services/faculties";
 import { SubFaculties } from "../../services/subFaculties";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   faculty: "",
@@ -23,6 +24,7 @@ const initialState = {
 };
 
 const ProfilInfoAdd = () => {
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const decoded = jwt_decode(token);
 
@@ -89,6 +91,8 @@ const ProfilInfoAdd = () => {
         <p className="text-center text-success fw-bold">Ma'lumot saqlandi</p>
       );
       setPost(initialState);
+      window.location.reload();
+      navigate("/profil");
       return response;
     } catch (error) {
       console.log(error.response.data); // Xatolikni ko'rsatish
@@ -133,14 +137,6 @@ const ProfilInfoAdd = () => {
     };
     getSubFaculties();
   }, []);
-
-  const filteredSubFaculties = subFaculties
-    .filter((subObject) => subObject.faculty.id === post.faculty.id)
-    .map((subObject) => (
-      <option key={subObject.id} value={subObject.id}>
-        {subObject.name}
-      </option>
-    ));
 
   return (
     <>
@@ -283,7 +279,11 @@ const ProfilInfoAdd = () => {
                   value={post.sub_faculty}
                 >
                   <option>Yo'nalishni tanlang</option>
-                  {filteredSubFaculties}
+                  {subFaculties.map((subObject) => (
+                    <option key={subObject.id} value={subObject.id}>
+                      {subObject.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

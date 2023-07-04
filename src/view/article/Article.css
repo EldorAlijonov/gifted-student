@@ -2,7 +2,7 @@
     /* Hidden by default */
     position: fixed;
     /* Stay in place */
-    z-index: 1;
+    z-index: 10000;
     /* Sit on top */
     left: 0;
     top: 0;
@@ -27,4 +27,11 @@
 
 .data {
     font-size: 11px !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .modal-confirmation-modal {
+
+        width: 80% !important;
+    }
 }

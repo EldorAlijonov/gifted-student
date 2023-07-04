@@ -1,5 +1,8 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useAsyncError } from "react-router-dom";
 import { StudentsArticle } from "../../services/article";
+import { MessageApi } from "../../services/message";
 import "./Article.css";
 const initialState = {
   name: "",
@@ -147,6 +150,18 @@ const Article = () => {
     e.preventDefault();
   };
 
+  // message start
+
+  const [message, setMessage] = useState([]);
+  console.log(message);
+  useEffect(() => {
+    const getMessageFunction = async () => {
+      const response = await MessageApi.getMessage();
+      setMessage(response.results, "dsd");
+    };
+    getMessageFunction();
+  }, []);
+
   return (
     <>
       <div className="mb-3 card bg-white mb-5">
@@ -209,15 +224,21 @@ const Article = () => {
               return (
                 <div
                   key={articl.id}
-                  className="bg-white mb-3 d-flex align-items-center justify-content-between py-2 px-3 rounded shadow-sm"
+                  className="bg-white mb-3 d-flex align-items-center
+                   justify-content-between py-2 px-3 rounded shadow-sm"
                 >
                   <div className="d-flex flex-column">
-                    <h5>{articl.name}</h5>
-                    <p className="text-secondary data">{formattedDate}</p>
+                    <h5 className="m-0">{articl.name}</h5>
+                    <p className="text-secondary data m-0">{formattedDate}</p>
                   </div>
                   <div>
                     <button
-                      className="btn btn-info me-3"
+                      className={`bi bi-chat-left-text btn btn-outline-secondary 
+                      py-1 px-2 me-3                     
+                      `}
+                    ></button>
+                    <button
+                      className="btn btn-outline-info me-3 bi bi-pen-fill py-1 px-2"
                       onClick={() => {
                         setEdit({
                           id: articl.id,
@@ -226,15 +247,11 @@ const Article = () => {
                         });
                         setConfirmEdit(true);
                       }}
-                    >
-                      Edit
-                    </button>
+                    ></button>
                     <button
-                      className="btn btn-danger"
+                      className="btn btn-outline-danger bi bi-trash py-1 px-2"
                       onClick={() => setConfirmDeleteId(articl.id)}
-                    >
-                      Delete
-                    </button>
+                    ></button>
                   </div>
                 </div>
               );
@@ -249,8 +266,8 @@ const Article = () => {
       {/* Tasdiqlash oynasi start*/}
 
       {confirmDeleteId && (
-        <div className="delet-modal">
-          <div className="delete-confirmation-modal text-center rounded w-25">
+        <div className="modal-modal">
+          <div className="modal-confirmation-modal text-center rounded w-25">
             <p>Yutuqni o'chirishga rozimisiz?</p>
             <div className="d-flex justify-content-between">
               <button
@@ -319,7 +336,7 @@ const Article = () => {
                       handleEdit();
                     }}
                   >
-                    Edit
+                    Tahrirlash
                   </button>
                   <button
                     className="btn btn-secondary px-4"

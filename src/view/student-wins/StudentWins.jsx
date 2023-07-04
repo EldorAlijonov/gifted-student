@@ -202,15 +202,16 @@ const StudentWins = () => {
               return (
                 <div
                   key={win.id}
-                  className="bg-white mb-3 d-flex align-items-center justify-content-between py-2 px-3 rounded shadow-sm"
+                  className="bg-white mb-3 d-flex align-items-center
+                   justify-content-between py-2 px-3 rounded shadow-sm"
                 >
                   <div className="d-flex flex-column">
-                    <h5>{win.name}</h5>
-                    <p className="text-secondary data">{formattedDate}</p>
+                    <h5 className="m-0">{win.name}</h5>
+                    <p className="text-secondary data m-0">{formattedDate}</p>
                   </div>
                   <div>
                     <button
-                      className="btn btn-info me-3"
+                      className="btn btn-outline-info me-3 bi bi-pen-fill py-1 px-2"
                       onClick={() => {
                         setEdit({
                           id: win.id,
@@ -219,14 +220,11 @@ const StudentWins = () => {
                         });
                         setConfirmEdit(true);
                       }}
-                    >
-                      Tahrirlash
-                    </button>
+                    ></button>
                     <button
-                      className="btn btn-danger"
+                      className="btn btn-outline-danger bi bi-trash py-1 px-2"
                       onClick={() => setConfirmDeleteId(win.id)}
                     >
-                      O'chirish
                     </button>
                   </div>
                 </div>
@@ -305,7 +303,7 @@ const StudentWins = () => {
                       handleEdit();
                     }}
                   >
-                    Edit
+                    Tahrirlash
                   </button>
                   <button
                     className="btn btn-secondary px-4"

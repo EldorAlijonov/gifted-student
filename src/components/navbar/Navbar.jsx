@@ -48,7 +48,7 @@ function Navbar() {
             <ul className="navbar-nav">
               <li className="nav-item">
                 <Link className="nav-link active" aria-current="page" to={"/"}>
-                  Main
+                  Bosh sahifa
                 </Link>
               </li>
             </ul>
@@ -61,7 +61,7 @@ function Navbar() {
                 onClick={logoutHandler}
                 disabled={isLoading}
               >
-                {isLoading ? "Loading..." : "Logout"}
+                {isLoading ? "Loading..." : "Chiqish"}
               </button>
             ) : null}
             {token ? null : (
@@ -69,14 +69,6 @@ function Navbar() {
                 Kirish
               </button>
             )}
-            <div className="d-flex navbar-select-div py-1 px-2 rounded text-secondary">
-              <i className="bi bi-globe"></i>
-              <select className="px-2 navbar-select text-secondary">
-                <option value="1">Uz</option>
-                <option value="1">Ru</option>
-                <option value="1">En</option>
-              </select>
-            </div>
           </div>
         </div>
       </div>

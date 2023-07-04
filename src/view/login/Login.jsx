@@ -64,7 +64,7 @@ function Login() {
   return (
     <div className="w-100 bg-light position-relative py-5 section-vh">
       <div className="container">
-        <div className="row d-flex justify-content-center">
+        <div className="row d-flex justify-content-center px-3">
           <div className="col-md-5 position-relative bg-white rounded p-4 shadow py-5">
             <form>
               <h5 className="title text-center">Tizimga kirish</h5>

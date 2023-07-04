@@ -2,7 +2,7 @@
     /* Hidden by default */
     position: fixed;
     /* Stay in place */
-    z-index: 1;
+    z-index: 10000;
     /* Sit on top */
     left: 0;
     top: 0;
@@ -17,7 +17,7 @@
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-confirmation-modal{
+.modal-confirmation-modal {
     background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
@@ -25,6 +25,13 @@
 }
 
 
-.data{
+.data {
     font-size: 11px !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .modal-confirmation-modal {
+
+        width: 80% !important;
+    }
 }

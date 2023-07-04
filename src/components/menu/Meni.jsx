@@ -51,7 +51,7 @@ function Menu() {
           <li className="list-group-item d-flex align-items-center flex-wrap">
             <Link className="btn fs-5 profil-button" to={"/profil_info_add"}>
               <i className="bi  bi-file-earmark-person fs-3 me-3"></i>
-              Shaxsiy malumotlarni kiritish
+              Shaxsiy malumotlar
             </Link>
           </li>
           <li className="list-group-item d-flex align-items-center flex-wrap">

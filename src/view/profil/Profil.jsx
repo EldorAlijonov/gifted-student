@@ -8,6 +8,8 @@ function Profil() {
   const [post, setPost] = useState([]);
   const [student, setStudent] = useState([]);
 
+  console.log(student);
+
   const token = localStorage.getItem("token");
   const decoded = jwt_decode(token);
 
@@ -16,6 +18,7 @@ function Profil() {
       try {
         const response = await StudentsRepository.getStudents(userId);
         setStudent(response.data);
+      
         localStorage.setItem("studentId", response.data.id);
       } catch (error) {
         console.log(error);
