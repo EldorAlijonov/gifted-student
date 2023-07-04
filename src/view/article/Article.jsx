@@ -151,7 +151,7 @@ const Article = () => {
   };
 
   // message start
-
+const [selectedArticleId, setSelectedArticleId] = useState(null);
   const [message, setMessage] = useState([]);
   console.log(message);
   useEffect(() => {
@@ -236,6 +236,7 @@ const Article = () => {
                       className={`bi bi-chat-left-text btn btn-outline-secondary 
                       py-1 px-2 me-3                     
                       `}
+                      onClick={() => setSelectedArticleId(articl.id)}
                     ></button>
                     <button
                       className="btn btn-outline-info me-3 bi bi-pen-fill py-1 px-2"
@@ -353,6 +354,9 @@ const Article = () => {
           </div>
         </div>
       )}
+
+      {/* message */}
+
     </>
   );
 };
