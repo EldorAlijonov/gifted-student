@@ -30,7 +30,7 @@ const Article = () => {
     setPost(initialState);
     setErrors({});
   };
-
+  const [saveMg, setSaveMg] = useState("");
   const handleForm = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -151,16 +151,24 @@ const Article = () => {
   };
 
   // message start
-const [selectedArticleId, setSelectedArticleId] = useState(null);
+  const [selectedArticleId, setSelectedArticleId] = useState(null);
   const [message, setMessage] = useState([]);
-  console.log(message);
+  const [filterMessage, setFilterMessage] = useState([]);
+
   useEffect(() => {
     const getMessageFunction = async () => {
       const response = await MessageApi.getMessage();
-      setMessage(response.results, "dsd");
+      setMessage(response.results);
     };
     getMessageFunction();
   }, []);
+
+  useEffect(() => {
+    const filteredMessages = message.filter(
+      (e) => e.student === Number(localStorage.getItem("studentId"))
+    );
+    setFilterMessage(filteredMessages);
+  }, [message]);
 
   return (
     <>
@@ -216,10 +224,13 @@ const [selectedArticleId, setSelectedArticleId] = useState(null);
             .map((articl) => {
               const createAtDate = new Date(articl.create_at);
               const year = createAtDate.getFullYear();
-              const month = createAtDate.getMonth() + 1;
-              const day = createAtDate.getDate();
+              const month = String(createAtDate.getMonth() + 1).padStart(
+                2,
+                "0"
+              );
+              const day = String(createAtDate.getDate()).padStart(2, "0");
 
-              const formattedDate = `${year}-${month}-${day}`;
+              const formattedDate = `${day}.${month}.${year}`;
 
               return (
                 <div
@@ -233,9 +244,7 @@ const [selectedArticleId, setSelectedArticleId] = useState(null);
                   </div>
                   <div>
                     <button
-                      className={`bi bi-chat-left-text btn btn-outline-secondary 
-                      py-1 px-2 me-3                     
-                      `}
+                      className={`bi bi-chat-left-text btn btn-outline-secondary  py-1 px-2 me-3`}
                       onClick={() => setSelectedArticleId(articl.id)}
                     ></button>
                     <button
@@ -259,11 +268,44 @@ const [selectedArticleId, setSelectedArticleId] = useState(null);
             })
         ) : (
           <p className="text-center h5 text-danger mt-5">
-            No articles available
+            Maqolalar mavjud emas
           </p>
         )}
       </div>
 
+      {selectedArticleId && (
+        <div className="modal-modal">
+          <div className="modal-confirmation-modal text-center rounded w-50">
+            <div className="d-flex">
+              <div
+                className="bi bi-x-lg btn ms-auto"
+                onClick={() => {
+                  setSelectedArticleId(false);
+                }}
+              ></div>
+            </div>
+            {filterMessage
+              .filter((e) => e.win == null)
+              .filter((e) => e.article == selectedArticleId)
+              .map((e) => {
+                const createAtDate = new Date(e.create_at);
+                const year = createAtDate.getFullYear();
+                const month = String(createAtDate.getMonth() + 1).padStart(
+                  2,
+                  "0"
+                );
+                const day = String(createAtDate.getDate()).padStart(2, "0");
+                const formattedDate = `${day}.${month}.${year}`;
+                return (
+                  <div key={e.id} className="message-item">
+                    <p>{e.letter}</p>
+                    <p>{formattedDate}</p>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      )}
       {/* Tasdiqlash oynasi start*/}
 
       {confirmDeleteId && (
@@ -356,7 +398,6 @@ const [selectedArticleId, setSelectedArticleId] = useState(null);
       )}
 
       {/* message */}
-
     </>
   );
 };

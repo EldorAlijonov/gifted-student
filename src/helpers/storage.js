@@ -26,6 +26,6 @@ export const removeStudentId = (key) => {
   try {
     localStorage.removeItem(key);
   } catch (error) {
-    console.log("Error remove data");
+    console.log("Error remove student Id");
   }
 };

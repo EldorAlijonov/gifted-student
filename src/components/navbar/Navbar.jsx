@@ -13,9 +13,9 @@ function Navbar() {
   const logoutHandler = () => {
     dispatch(logoutUser());
     try {
-      removeItem("token");
-      removeStudentId("studentId"); // remove studentId if necessary
       navigate("/login");
+      removeStudentId("studentId"); // remove studentId if necessary
+      removeItem("token");
       window.location.reload();
     } catch (error) {
       console.log("Error");

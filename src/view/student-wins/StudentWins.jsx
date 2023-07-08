@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { MessageApi } from "../../services/message";
 import { StudentWinRepository } from "../../services/studentWin";
 import "./StudentWins.css";
 
@@ -71,7 +72,7 @@ const StudentWins = () => {
 
   const validateFileName = (name) => {
     if (!name.trim()) {
-      return "Ism maydoni to'ldirilishi kerak";
+      return "Nom maydoni to'ldirilishi kerak";
     }
     return null;
   };
@@ -141,6 +142,26 @@ const StudentWins = () => {
   const submit = (e) => {
     e.preventDefault();
   };
+  // message start
+  const [selectedArticleId, setSelectedArticleId] = useState(null);
+  const [message, setMessage] = useState([]);
+  const [filterMessage, setFilterMessage] = useState([]);
+const [dd,setDd]=useState(null)
+
+  useEffect(() => {
+    const getMessageFunction = async () => {
+      const response = await MessageApi.getMessage();
+      setMessage(response.results);
+    };
+    getMessageFunction();
+  }, []);
+
+  useEffect(() => {
+    const filteredMessages = message.filter(
+      (e) => e.student === Number(localStorage.getItem("studentId"))
+    );
+    setFilterMessage(filteredMessages);
+  }, [message]);
   return (
     <>
       <div className="mb-3 card bg-white mb-5">
@@ -195,10 +216,13 @@ const StudentWins = () => {
             .map((win) => {
               const createAtDate = new Date(win.create_at);
               const year = createAtDate.getFullYear();
-              const month = createAtDate.getMonth() + 1;
-              const day = createAtDate.getDate();
+              const month = String(createAtDate.getMonth() + 1).padStart(
+                2,
+                "0"
+              );
+              const day = String(createAtDate.getDate()).padStart(2, "0");
 
-              const formattedDate = `${year}-${month}-${day}`;
+              const formattedDate = `${day}.${month}.${year}`;
               return (
                 <div
                   key={win.id}
@@ -210,6 +234,10 @@ const StudentWins = () => {
                     <p className="text-secondary data m-0">{formattedDate}</p>
                   </div>
                   <div>
+                    <button
+                      className={`bi bi-chat-left-text btn  py-1 px-2 me-3 btn-outline-secondary`}
+                      onClick={() => setSelectedArticleId(win.id)}
+                    ></button>
                     <button
                       className="btn btn-outline-info me-3 bi bi-pen-fill py-1 px-2"
                       onClick={() => {
@@ -224,8 +252,7 @@ const StudentWins = () => {
                     <button
                       className="btn btn-outline-danger bi bi-trash py-1 px-2"
                       onClick={() => setConfirmDeleteId(win.id)}
-                    >
-                    </button>
+                    ></button>
                   </div>
                 </div>
               );
@@ -234,6 +261,40 @@ const StudentWins = () => {
           <p className="text-center h5 text-danger mt-5">No wins available</p>
         )}
       </div>
+
+      {selectedArticleId && (
+        <div className="modal-modal">
+          <div className="modal-confirmation-modal text-center rounded w-50">
+            <div className="d-flex">
+              <div
+                className="bi bi-x-lg btn ms-auto"
+                onClick={() => {
+                  setSelectedArticleId(false);
+                }}
+              ></div>
+            </div>
+            {filterMessage
+              .filter((e) => e.article == null)
+              .filter((e) => e.win == selectedArticleId)
+              .map((e) => {
+                const createAtDate = new Date(e.create_at);
+                const year = createAtDate.getFullYear();
+                const month = String(createAtDate.getMonth() + 1).padStart(
+                  2,
+                  "0"
+                );
+                const day = String(createAtDate.getDate()).padStart(2, "0");
+                const formattedDate = `${day}.${month}.${year}`;
+                return (
+                  <div key={e.id} className="message-item">
+                    <p>{e.letter }</p>
+                    <p>{formattedDate}</p>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      )}
       {confirmDeleteId && (
         <div className="modal-modal">
           <div className="modal-confirmation-modal text-center rounded w-25">

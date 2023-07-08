@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import jwt_decode from "jwt-decode";
 import { StudentsRepository } from "../../services/students";
 import { Faculties } from "../../services/faculties";
@@ -6,21 +6,21 @@ import { SubFaculties } from "../../services/subFaculties";
 import { useNavigate } from "react-router-dom";
 
 const initialState = {
-  faculty: "",
+  faculty: 0,
   image: null,
   group: "",
   course: "",
   passport_number: "",
   idcart_number: "",
   passport_or_idcart_file: null,
-  status: false,
+  status: true,
   region: "",
+  phone_number: "",
   district: "",
   street: "",
   resume: null,
-  create_at: new Date(),
   base_student: "",
-  sub_faculty: "",
+  sub_faculty: 0,
 };
 
 const ProfilInfoAdd = () => {
@@ -39,6 +39,8 @@ const ProfilInfoAdd = () => {
       setPost({ ...post, passport_or_idcart_file: e.target.files[0] });
     } else if (e.target.name === "passport_number") {
       setPost({ ...post, passport_number: e.target.value });
+    } else if (e.target.name === "phone_number") {
+      setPost({ ...post, phone_number: e.target.value });
     } else if (e.target.name === "region") {
       setPost({ ...post, region: e.target.value });
     } else if (e.target.name === "district") {
@@ -61,26 +63,31 @@ const ProfilInfoAdd = () => {
   const [saveMessage, setSaveMessage] = useState("");
   const handleForm = async (e) => {
     e.preventDefault();
-    const decodedId = decoded.user_id;
-
     const formData = new FormData();
     formData.append("image", post.image);
     formData.append("resume", post.resume);
     formData.append("passport_or_idcart_file", post.passport_or_idcart_file);
     formData.append("passport_number", post.passport_number);
     formData.append("region", post.region);
+    formData.append("phone_number", post.phone_number);
     formData.append("district", post.district);
     formData.append("street", post.street);
     formData.append("faculty", post.faculty);
     formData.append("course", post.course);
     formData.append("group", post.group);
-    formData.append("base_student", decodedId);
+    formData.append("base_student", decoded.user_id);
 
     if (isFormIncomplete()) {
       setSaveMessage(
         <p className="text-center text-danger fw-bold">
           Ma'lumotlarni to'liq kiriting
         </p>
+      );
+      return;
+    }
+    if (!post.image) {
+      setSaveMessage(
+        <p className="text-center text-danger fw-bold">Rasm tanlang</p>
       );
       return;
     }
@@ -91,8 +98,8 @@ const ProfilInfoAdd = () => {
         <p className="text-center text-success fw-bold">Ma'lumot saqlandi</p>
       );
       setPost(initialState);
-      window.location.reload();
       navigate("/profil");
+      window.location.reload();
       return response;
     } catch (error) {
       console.log(error.response.data); // Xatolikni ko'rsatish
@@ -106,37 +113,50 @@ const ProfilInfoAdd = () => {
       !post.passport_or_idcart_file ||
       !post.passport_number ||
       !post.region ||
+      !post.phone_number ||
       !post.district ||
       !post.street ||
       !post.faculty ||
       !post.course ||
-      !post.group
+      !post.group ||
+      !post.sub_faculty
     );
   };
   const [faculties, setFaculties] = useState([]);
   const [subFaculties, setSubFaculties] = useState([]);
 
+  const getFacultiesFunction = async () => {
+    try {
+      const response = await Faculties.getFaculties();
+      setFaculties(response.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getSubFaculties = async () => {
+    try {
+      const response = await SubFaculties.getSubFaculties();
+      setSubFaculties(response.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const getFacultiesFunction = async () => {
-      try {
-        const response = await Faculties.getFaculties();
-        setFaculties(response.results);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getFacultiesFunction();
 
-    const getSubFaculties = async () => {
-      try {
-        const response = await SubFaculties.getSubFaculties();
-        setSubFaculties(response.results);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getSubFaculties();
   }, []);
+
+  const [filteredSubFaculties, setWays] = useState([]);
+
+  useMemo(() => {
+    const filteredSubFaculties = subFaculties.filter(
+      (subObject) => subObject.faculty.id == Number(post.faculty)
+    );
+    setWays(filteredSubFaculties);
+  }, [post.faculty]);
 
   return (
     <>
@@ -163,6 +183,21 @@ const ProfilInfoAdd = () => {
             </div>
             <div className="row mb-3">
               <div className="col-sm-3">
+                <h6 className="mb-0">Tel raqami</h6>
+              </div>
+              <div className="col-sm-9 text-secondary">
+                <input
+                  type="text"
+                  className="form-control"
+                  name="phone_number"
+                  value={post.phone_number}
+                  placeholder="+998 90 999 9999"
+                  onChange={onChange}
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-sm-3">
                 <h6 className="mb-0">Viloyat</h6>
               </div>
               <div className="col-sm-9 text-secondary">
@@ -177,7 +212,7 @@ const ProfilInfoAdd = () => {
             </div>
             <div className="row mb-3">
               <div className="col-sm-3">
-                <h6 className="mb-0">Tuman (Shahar)</h6>
+                <h6 className="mb-0">Tuman {" (Shahar)"}</h6>
               </div>
               <div className="col-sm-9 text-secondary">
                 <input
@@ -192,7 +227,7 @@ const ProfilInfoAdd = () => {
 
             <div className="row mb-3">
               <div className="col-sm-3">
-                <h6 className="mb-0">Ko'cha</h6>
+                <h6 className="mb-0">Mahalla</h6>
               </div>
               <div className="col-sm-9 text-secondary">
                 <input
@@ -201,6 +236,19 @@ const ProfilInfoAdd = () => {
                   value={post.street}
                   onChange={onChange}
                   name="street"
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-sm-3">
+                <h6 className="mb-0">Rasm</h6>
+              </div>
+              <div className="col-sm-9 text-secondary">
+                <input
+                  className="form-control"
+                  type="file"
+                  name="image"
+                  onChange={onChange}
                 />
               </div>
             </div>
@@ -230,40 +278,24 @@ const ProfilInfoAdd = () => {
                 />
               </div>
             </div>
+
             <div className="row mb-3">
               <div className="col-sm-3">
-                <h6 className="mb-0">Rasm</h6>
-              </div>
-              <div className="col-sm-9 text-secondary">
-                <input
-                  className="form-control"
-                  type="file"
-                  name="image"
-                  onChange={onChange}
-                />
-              </div>
-            </div>
-            <h4 className="title text-center py-2">Ta'lim muosasasi</h4>
-            <div className="row mb-3">
-              <div className="col-sm-3">
-                <h6 className="mb-0">Fakultet :</h6>
+                <h6 className="mb-0">Fakultet </h6>
               </div>
               <div className="col-sm-9 text-secondary">
                 <select
                   className="form-select"
-                  aria-label="Default select example"
                   name="faculty"
                   onChange={onChange}
                   value={post.faculty}
                 >
                   <option>Fakultetni tanlang</option>
-                  {faculties.map((facultyObject) => {
-                    return (
-                      <option key={facultyObject.id} value={facultyObject.id}>
-                        {facultyObject.name}
-                      </option>
-                    );
-                  })}
+                  {faculties.map((facultyObject) => (
+                    <option key={facultyObject.id} value={facultyObject.id}>
+                      {facultyObject.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -274,16 +306,17 @@ const ProfilInfoAdd = () => {
               <div className="col-sm-9 text-secondary">
                 <select
                   className="form-select"
-                  aria-label="Default select example"
+                  name="sub_faculty"
                   onChange={onChange}
                   value={post.sub_faculty}
                 >
                   <option>Yo'nalishni tanlang</option>
-                  {subFaculties.map((subObject) => (
-                    <option key={subObject.id} value={subObject.id}>
-                      {subObject.name}
-                    </option>
-                  ))}
+                  {post.faculty &&
+                    filteredSubFaculties.map((subObject) => (
+                      <option key={subObject.id} value={subObject.id}>
+                        {subObject.name}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
@@ -316,6 +349,7 @@ const ProfilInfoAdd = () => {
               </div>
             </div>
             {saveMessage && <>{saveMessage}</>}
+
             <div className="row">
               <div className="col-sm-12 text-end">
                 <button className="btn btn-primary px-5" type="submit">

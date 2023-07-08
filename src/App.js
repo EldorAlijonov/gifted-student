@@ -11,6 +11,7 @@ import {
   Profil,
 } from "./view";
 import "./App.css";
+import ProfilEdit from "./view/profil/PeofilEdit";
 
 function App() {
   const { token } = useSelector((state) => state.auth);
@@ -30,6 +31,7 @@ function App() {
                   <Route path="/profil_info_add" element={<ProfilInfoAdd />} />
                   <Route path="/article_add" element={<Article />} />
                   <Route path="/student_wins" element={<StudentWins />} />
+                  <Route path="/profil_edit/:id" element={<ProfilEdit/>}/>
                 </Routes>
               </div>
             </div>

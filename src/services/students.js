@@ -9,4 +9,8 @@ export const StudentsRepository = {
     const response = await axios.get(`students/by_customuser/${id}/`);
     return response;
   },
+  async putStidents(id, updataData) {
+    const response = await axios.put(`students/${id}/update/`, updataData);
+    return response;
+  },
 };

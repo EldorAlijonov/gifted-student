@@ -18,23 +18,33 @@ function Login() {
     password: "",
   });
 
+  const [errors, setError] = useState("");
+
   const onChange = (e) => {
     setPost({ ...post, [e.target.name]: e.target.value });
+    setError(""); // Xatolik yuz berdiyida xatolikni tozalash
   };
 
   const dispatch = useDispatch();
 
-  const { isLoading, loggedIn } = useSelector((state) => state.auth);
+  const { isLoading, loggedIn, error } = useSelector((state) => state.auth);
 
   const loginHandler = async (e) => {
     e.preventDefault();
+
+    if (!post.email || !post.password) {
+      setError("Iltimos, maydonlarni to'ldiring");
+      return;
+    }
+
     dispatch(loginUserStart());
     try {
       const response = await AuthService.userLogin(post);
       dispatch(loginUserSuccess(response));
       navigate("/profil");
     } catch (error) {
-      dispatch(loginUserFailure(error.response));
+      dispatch(loginUserFailure(error.response.data.detail));
+      setError("Kirishda xatolik yuz berdi");
     }
   };
 
@@ -42,7 +52,7 @@ function Login() {
     if (loggedIn) {
       navigate("/profil");
     }
-  }, [loggedIn, navigate]); // loggedIn va navigate o'zgaruvchilarini useEffect depslariga qo'shing
+  }, [loggedIn, navigate]);
 
   const inputs = [
     {
@@ -62,20 +72,25 @@ function Login() {
   ];
 
   return (
-    <div className="w-100 bg-light position-relative py-5 section-vh">
-      <div className="container">
-        <div className="row d-flex justify-content-center px-3">
-          <div className="col-md-5 position-relative bg-white rounded p-4 shadow py-5">
-            <form>
-              <h5 className="title text-center">Tizimga kirish</h5>
-              {inputs.map((input) => (
-                <Input
-                  key={input.id}
-                  {...input}
-                  value={post[input.name]}
-                  onChange={onChange}
-                />
-              ))}
+  <div className="w-100 bg-light position-relative py-5 section-vh">
+    <div className="container">
+      <div className="row d-flex justify-content-center px-3">
+        <div className="col-md-5 position-relative bg-white rounded p-4 shadow py-5">
+          <form>
+            <h5 className="title text-center">Tizimga kirish</h5>
+            {inputs.map((input) => (
+              <Input
+                key={input.id}
+                {...input}
+                value={post[input.name]}
+                onChange={onChange}
+              />
+            ))}
+            {errors && <p className="text-danger">{errors}</p>}
+            {error && error.includes("not found") && (
+              <p className="text-danger">Foydalanuvchi mavjud emas</p>
+            )}
+            {!loggedIn && (
               <div className="d-flex justify-content-center">
                 <button
                   type="submit"
@@ -86,14 +101,21 @@ function Login() {
                   {isLoading ? "Loading..." : "Kirish"}
                 </button>
               </div>
+            )}
+            {loggedIn && (
               <div className="d-flex justify-content-center">
-                <GoogleButton />
+                <p className="text-success">Siz tizimga muvaffaqiyatli kirdingiz!</p>
               </div>
-            </form>
-          </div>
+            )}
+            <div className="d-flex justify-content-center">
+              <GoogleButton />
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
+
   );
 }
 
