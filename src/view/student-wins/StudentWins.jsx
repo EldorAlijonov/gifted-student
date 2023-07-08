@@ -233,10 +233,15 @@ const StudentWins = () => {
                     <p className="text-secondary data m-0">{formattedDate}</p>
                   </div>
                   <div>
-                    <button
-                      className={`bi bi-chat-left-text btn  py-1 px-2 me-3 btn-outline-secondary`}
-                      onClick={() => setSelectedArticleId(win.id)}
-                    ></button>
+                    {filterMessage
+                      .filter((e) => e.win == win.id)
+                      .map((e) => (
+                        <button
+                          className={`bi bi-chat-left-text btn  py-1 px-2 me-3 btn-outline-secondary`}
+                          onClick={() => setSelectedArticleId(win.id)}
+                        ></button>
+                      ))}
+
                     <button
                       className="btn btn-outline-info me-3 bi bi-pen-fill py-1 px-2"
                       onClick={() => {
@@ -286,7 +291,7 @@ const StudentWins = () => {
                 const formattedDate = `${day}.${month}.${year}`;
                 return (
                   <div key={e.id} className="message-item">
-                    <p>{e.letter }</p>
+                    <p>{e.letter}</p>
                     <p>{formattedDate}</p>
                   </div>
                 );

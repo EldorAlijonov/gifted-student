@@ -243,10 +243,14 @@ const Article = () => {
                     <p className="text-secondary data m-0">{formattedDate}</p>
                   </div>
                   <div>
-                    <button
-                      className={`bi bi-chat-left-text btn btn-outline-secondary  py-1 px-2 me-3`}
-                      onClick={() => setSelectedArticleId(articl.id)}
-                    ></button>
+                    {filterMessage
+                      .filter((e) => e.article == articl.id)
+                      .map((e) => (
+                        <button
+                          className={`bi bi-chat-left-text btn btn-outline-secondary  py-1 px-2 me-3`}
+                          onClick={() => setSelectedArticleId(articl.id)}
+                        ></button>
+                      ))}
                     <button
                       className="btn btn-outline-info me-3 bi bi-pen-fill py-1 px-2"
                       onClick={() => {
