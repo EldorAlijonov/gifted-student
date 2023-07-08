@@ -146,7 +146,6 @@ const StudentWins = () => {
   const [selectedArticleId, setSelectedArticleId] = useState(null);
   const [message, setMessage] = useState([]);
   const [filterMessage, setFilterMessage] = useState([]);
-const [dd,setDd]=useState(null)
 
   useEffect(() => {
     const getMessageFunction = async () => {

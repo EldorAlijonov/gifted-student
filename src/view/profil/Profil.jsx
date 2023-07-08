@@ -113,7 +113,6 @@ function Profil() {
     getSubFaculties();
   }, []);
 
-
   const [filteredSubFaculties, setWays] = useState([]);
 
   useMemo(() => {
@@ -122,6 +121,9 @@ function Profil() {
     );
     setWays(filteredSubFaculties);
   }, [edit.faculty]);
+
+  console.log(student.faculty);
+
   return (
     <>
       <div className="mb-3 card bg-white">
@@ -147,7 +149,13 @@ function Profil() {
               <h6 className="mb-0">Fakultet</h6>
             </div>
             <div className="col-sm-9 text-secondary">
-              {student.faculty ? student.faculty : "Ma'lumot kiritilmagan"}
+              {student.faculty ? (
+                faculties
+                  .filter((e) => e.id === Number(student.faculty))
+                  .map((e) => <span key={e.id}>{e.name}</span>)
+              ) : (
+                <span>Malumot kiritilmagan</span>
+              )}
             </div>
           </div>
           <hr />
@@ -156,9 +164,13 @@ function Profil() {
               <h6 className="mb-0">Yo'nalish</h6>
             </div>
             <div className="col-sm-9 text-secondary">
-              {student.sub_faculty
-                ? student.sub_faculty
-                : "Ma'lumot kiritilmagan"}
+              {student.sub_faculty ? (
+                subFaculties
+                  .filter((e) => e.id === Number(student.sub_faculty))
+                  .map((e) => <span key={e.id}>{e.name}</span>)
+              ) : (
+                <>Ma'lumot kiritilmagan</>
+              )}
             </div>
           </div>
           <hr />
