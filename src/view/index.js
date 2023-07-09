@@ -5,3 +5,4 @@ export { default as Profil } from "./profil/Profil";
 export { default as StudentWins } from "./student-wins/StudentWins";
 export { default as ProfilInfoAdd } from "./pfrofil-info-add/ProfilInfoAdd";
 export { default as Article } from "./article/Article";
+export { default as Grant } from "./grant/Grant";

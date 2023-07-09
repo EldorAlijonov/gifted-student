@@ -49,7 +49,11 @@ function Menu() {
             </Link>
           </li>
           <li className="list-group-item d-flex align-items-center flex-wrap">
-            <Link className="btn fs-5 profil-button" to={"/profil_info_add"}>
+            <Link
+              className={`btn fs-5 profil-button ${student ? "disabled" : ""}`}
+              to={"/profil_info_add"}
+              disabled={studentId}
+            >
               <i className="bi  bi-file-earmark-person fs-3 me-3"></i>
               Shaxsiy malumotlar
             </Link>
@@ -89,7 +93,10 @@ function Menu() {
             </Link>
           </li>
           <li className="list-group-item">
-            <Link className="btn fs-5 profil-button d-flex align-items-center flex-wrap">
+            <Link
+              to={"/grant"}
+              className="btn fs-5 profil-button d-flex align-items-center flex-wrap"
+            >
               <i className="bi bi-wallet fs-3 me-3"></i>
               Grant
             </Link>

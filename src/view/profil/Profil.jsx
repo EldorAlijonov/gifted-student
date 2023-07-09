@@ -76,8 +76,8 @@ function Profil() {
         e.id === edit.id ? response : e
       );
       setStudent(updatedProfile);
-      setEdit(initialState);
       setConfirmEdit(false);
+      setEdit(initialState);
     } catch (error) {
       console.log(error);
     }
@@ -390,7 +390,6 @@ function Profil() {
                     />
                   </div>
                 </div>
-                <h4 className="title text-center py-2">Ta'lim muosasasi</h4>
                 <div className="row mb-3">
                   <div className="col-sm-3">
                     <h6 className="mb-0">Fakultet :</h6>
@@ -471,7 +470,7 @@ function Profil() {
                 {/* {saveMessage && <>{saveMessage}</>} */}
 
                 <div className="row">
-                  <div className="col-sm-12 text-end">
+                  <div className="col-sm-12 d-flex justify-content-end">
                     <button
                       className="btn btn-primary px-4 me-3"
                       onClick={() => {

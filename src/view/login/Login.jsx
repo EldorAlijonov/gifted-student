@@ -33,7 +33,7 @@ function Login() {
     e.preventDefault();
 
     if (!post.email || !post.password) {
-      setError("Iltimos, maydonlarni to'ldiring");
+      setError("Login yoki parol xato");
       return;
     }
 

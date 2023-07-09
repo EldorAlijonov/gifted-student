@@ -27,6 +27,7 @@ const ProfilInfoAdd = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const decoded = jwt_decode(token);
+  const [loading, setLoading] = useState(false);
 
   const [post, setPost] = useState(initialState);
 
@@ -93,7 +94,9 @@ const ProfilInfoAdd = () => {
     }
 
     try {
+      setLoading(true);
       const response = await StudentsRepository.addStudents(formData);
+      setLoading(false);
       setSaveMessage(
         <p className="text-center text-success fw-bold">Ma'lumot saqlandi</p>
       );
@@ -162,7 +165,7 @@ const ProfilInfoAdd = () => {
     <>
       <div className="mb-3 card bg-white">
         <div className="card-body">
-          <form onSubmit={handleForm}>
+          <form>
             <h4 className="title text-center py-2">
               Shaxsiy malumotlarni kiritish
             </h4>
@@ -352,8 +355,13 @@ const ProfilInfoAdd = () => {
 
             <div className="row">
               <div className="col-sm-12 text-end">
-                <button className="btn btn-primary px-5" type="submit">
-                  Saqlash
+                <button
+                  className="btn btn-primary px-5"
+                  type="submit"
+                  disabled={loading}
+                  onClick={handleForm}
+                >
+                  {loading ? "Yuklanmoqda..." : "Saqlash"}
                 </button>
               </div>
             </div>

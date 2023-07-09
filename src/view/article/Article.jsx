@@ -13,7 +13,7 @@ const initialState = {
 const Article = () => {
   const studentId = localStorage.getItem("studentId");
   const [post, setPost] = useState(initialState);
-
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const onChange = (e) => {
@@ -47,7 +47,9 @@ const Article = () => {
     }
 
     try {
+      setLoading(true);
       const response = await StudentsArticle.addArticle(formData);
+      setLoading(false);
       clearForm();
       setErrors({});
       return response;
@@ -73,7 +75,7 @@ const Article = () => {
 
   const validateFileName = (name) => {
     if (!name.trim()) {
-      return "Ism maydoni to'ldirilishi kerak";
+      return "Nom maydoni to'ldirilishi kerak";
     }
     return null;
   };
@@ -173,7 +175,7 @@ const Article = () => {
   return (
     <>
       <div className="mb-3 card bg-white mb-5">
-        <form className="card-body" onSubmit={handleForm}>
+        <form className="card-body">
           <h4 className="title text-center py-2">Maqola qo'shish</h4>
           <div className="row mb-3">
             <div className="col-sm-3">
@@ -210,8 +212,13 @@ const Article = () => {
           </div>
           <div className="row">
             <div className="col-sm-12 text-end">
-              <button className="btn btn-primary px-5" type="submit">
-                Saqlash
+              <button
+                className="btn btn-primary px-5"
+                type="submit"
+                disabled={loading}
+                onClick={handleForm}
+              >
+                {loading ? "Saqlanmoqda..." : "Saqlash"}
               </button>
             </div>
           </div>

@@ -11,6 +11,7 @@ const initialState = {
 
 const StudentWins = () => {
   const studentId = localStorage.getItem("studentId");
+  const [loading, setLoading] = useState(false);
 
   const [post, setPost] = useState(initialState);
   const [errors, setErrors] = useState({});
@@ -46,7 +47,9 @@ const StudentWins = () => {
     }
 
     try {
+      setLoading(true);
       const response = await StudentWinRepository.postWin(formData);
+      setLoading(false);
       clearForm();
       setErrors({});
       return response;
@@ -164,7 +167,7 @@ const StudentWins = () => {
   return (
     <>
       <div className="mb-3 card bg-white mb-5">
-        <form className="card-body" onSubmit={handleForm}>
+        <form className="card-body">
           <h4 className="title text-center py-2">Talabaning yutuqlari</h4>
           <div className="row mb-3">
             <div className="col-sm-3">
@@ -201,8 +204,13 @@ const StudentWins = () => {
           </div>
           <div className="row">
             <div className="col-sm-12 text-end">
-              <button className="btn btn-primary px-5" type="submit">
-                Saqlash
+              <button
+                className="btn btn-primary px-5"
+                type="submit"
+                disabled={loading}
+                onClick={handleForm}
+              >
+                {loading ? "Saqlanmoqda..." : "Saqlash"}
               </button>
             </div>
           </div>
