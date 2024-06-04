@@ -1,0 +1,58 @@
+.register-form {
+
+    .form-container {
+        border-radius: 10px;
+        padding: 30px 20px;
+        box-shadow: 0px 3px 9px 0px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 0px 3px 9px 0px rgba(0, 0, 0, 0.75);
+
+        // xs va sm uchun
+        width: 100% !important;
+
+
+        // md uchun
+        @media (min-width: 768px) and (max-width: 991px) {
+            width: 45% !important;
+        }
+
+        // lg uchun
+        @media (min-width: 992px) {
+            width: 25% !important;
+        }
+    }
+
+    .logo {
+        .title {
+            color: #263059;
+            font-size: 24px;
+            font-weight: 600;
+        }
+    }
+
+    .form-label {
+        color: #263059;
+    }
+
+    .register-btn {
+        background: #0033ff;
+    }
+
+    .form-control {
+
+        &::placeholder {
+            color: #2630596b;
+        }
+
+        &.is-invalidd:focus {
+            border-color: #dc3546;
+            outline: 0;
+            box-shadow: 0 0 0 .25rem rgba(253, 13, 13, 0.25);
+        }
+
+    }
+
+    .error {
+        font-size: 12px;
+        color: #c00000 !important;
+    }
+}
